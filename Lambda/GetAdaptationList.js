@@ -18,11 +18,9 @@ exports.handler = async (event) => {
   const allKeys = [];
   await getAllKeys({ Bucket: 'scriptspeare-media-files' }, allKeys);
   
-  
   await allKeys.forEach(function(element){
-      if (element.substr(0, folder_name_length) === folder && element.substr(element.length - 4, element.length) === ".mp4") {
-          requiredKeys.push(element.slice(folder_name_length, (element.length - 4)));
-      }
+      if (element.substr(0, folder_name_length) === folder && element.substr(element.length - 4, element.length) === ".mp4")
+          requiredKeys.push(element.slice(folder_name_length, (element.length - 4)).split("-"));
   });
   
   return requiredKeys;
