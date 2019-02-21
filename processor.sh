@@ -18,5 +18,5 @@ do
   :
   echo Gentle is processing: $a
   curl -F "audio=@$a" -F "transcript=@$preParsedFile" "http://$url/transcriptions?async=false" > "gentled-${a}.json"
-  python3 auto-adjusment.py "gentled-${a}.json" "${a}.json"
+  python3 postParser.py "gentled-${a}.json" "${a}.json"
 done
