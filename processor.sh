@@ -17,6 +17,6 @@ for a in "${audios[@]}"
 do
   :
   echo Gentle is processing: $a
-  curl -F "audio=@$a" -F "transcript=@$preParsedFile" "http://$url/transcriptions?async=false" > "${a}-FROM-${script}.json"
-  python3 auto-adjusment.py "${a}-FROM-${script}.json"
+  curl -F "audio=@$a" -F "transcript=@$preParsedFile" "http://$url/transcriptions?async=false" > "gentled-${a}.json"
+  python3 auto-adjusment.py "gentled-${a}.json" "${a}.json"
 done

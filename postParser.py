@@ -7,6 +7,8 @@ print(sys.argv[1])
 with open(sys.argv[1]) as f:
     data = json.load(f)
 
+outputName = sys.argv[2]
+
 prevEnd = 0
 removeWords = []
 
@@ -38,6 +40,6 @@ for i, w in enumerate(data['words']):
 for i in sorted(removeWords, reverse=True):
     del data['words'][i]
 
-with open("time-auto-adjusted_" + sys.argv[1], 'w') as f:
+with open(sys.argv[2], 'w') as f:
     json.dump(data, f)
     # json.dump(data, f, indent=4, sort_keys=True)
