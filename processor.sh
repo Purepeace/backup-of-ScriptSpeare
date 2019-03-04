@@ -18,6 +18,6 @@ do
   :
   echo Gentle is processing: $a
   name=$(basename $a .mp4)
-  curl -F "audio=@$a" -F "transcript=@$preParsedFile" "http://$url/transcriptions?async=false" > "gentled-${name}.json"
-  python3 postParser.py "gentled-${name}.json" "${name}.json"
+  curl -F "audio=@$a" -F "transcript=@$preParsedFile" "http://$url/transcriptions?async=false" > "${name}-original.json"
+  python3 postParser.py "${name}-original.json" "${name}.json"
 done
