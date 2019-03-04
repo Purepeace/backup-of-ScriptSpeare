@@ -12,6 +12,10 @@ outputName = sys.argv[2]
 prevEnd = 0
 removeWords = []
 
+niaCount = 0
+niaCap = 3
+niaMode = False
+
 for i, w in enumerate(data['words']):
     if w['case'] == 'success':
         if re.compile(r'\d+').match(w['word']) and w['alignedWord'] == '<unk>' and data['transcript'][w['endOffset']] == '^':
@@ -21,6 +25,8 @@ for i, w in enumerate(data['words']):
             del w['phones']
         # data['words'][i]['source'] = 'gentle'
         prevEnd = w['end']
+        data['words'][i]['alligned'] = 'True'
+        niaMode = False
     # try to automatically adjust times by looking at adjacent words start and end times.
     if w['case'] == 'not-found-in-audio':
         # if a line number was attempted to be adjusted remove it
@@ -36,6 +42,17 @@ for i, w in enumerate(data['words']):
                 nextStart = v['start']
                 break
         data['words'][i]['end'] = nextStart
+        if not niaMode:
+            niaCount += 1
+        if niaCount > niaCap:
+            niaMode = True
+            niaCount = 0
+            # backwards tagging
+            for j in range(max(i-niaCap, 0), i):
+                data['words'][j]['alligned'] = 'False'
+        if niaMode:
+            data['words'][i]['alligned'] = 'False'
+
 
 for i in sorted(removeWords, reverse=True):
     del data['words'][i]

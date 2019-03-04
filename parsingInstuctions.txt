@@ -1,0 +1,14 @@
+1) Put all and ONLY .mp4 files of a SINGLE play which are needed to be parsed
+raw masterscript (with .txt suffix)
+preParser.py
+postParser.py
+processor.sh
+in the same folder (therefore one folder for each play)
+Do NOT put any other .txt, .mp4 and .json files in that folder
+2) Start gentle app
+3) Open terminal
+4) cd to the folder
+5) type and run ./processor.sh localhost:8765
+this will initiate parsing process for all the .mp4 files in the folder
+and will take a while
+6) for another play repeat from step 1. It's possible to run process for several plays at once but I wouldn't recommend running more than 2 or 3 at once since all of them are gonna be using the same gentle instance 

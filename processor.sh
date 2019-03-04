@@ -17,6 +17,7 @@ for a in "${audios[@]}"
 do
   :
   echo Gentle is processing: $a
-  curl -F "audio=@$a" -F "transcript=@$preParsedFile" "http://$url/transcriptions?async=false" > "gentled-${a}.json"
-  python3 postParser.py "gentled-${a}.json" "${a}.json"
+  name=$(basename $a .mp4)
+  curl -F "audio=@$a" -F "transcript=@$preParsedFile" "http://$url/transcriptions?async=false" > "gentled-${name}.json"
+  python3 postParser.py "gentled-${name}.json" "${name}.json"
 done
