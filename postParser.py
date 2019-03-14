@@ -23,7 +23,6 @@ for i, w in enumerate(data['words']):
             continue
         if 'phones' in w:
             del w['phones']
-        # data['words'][i]['source'] = 'gentle'
         prevEnd = w['end']
         data['words'][i]['alligned'] = 'True'
         niaMode = False
@@ -34,7 +33,6 @@ for i, w in enumerate(data['words']):
             removeWords.append(i)
             continue
         # modify data
-        # data['words'][i]['source'] = 'auto'
         data['words'][i]['start'] = prevEnd
         nextStart = -1
         for j, v in enumerate(data['words'][i + 1:]):
@@ -42,6 +40,7 @@ for i, w in enumerate(data['words']):
                 nextStart = v['start']
                 break
         data['words'][i]['end'] = nextStart
+        data['words'][i]['case'] = 'success'
         if not niaMode:
             niaCount += 1
         if niaCount > niaCap:
@@ -50,8 +49,18 @@ for i, w in enumerate(data['words']):
             # backwards tagging
             for j in range(max(i-niaCap, 0), i):
                 data['words'][j]['alligned'] = 'False'
+                data['words'][j]['case'] = 'not-found-in-audio'
+                if 'start' in data['words'][j]:
+                    del data['words'][j]['start']
+                if 'end' in data['words'][j]:
+                    del data['words'][j]['end']
         if niaMode:
             data['words'][i]['alligned'] = 'False'
+            data['words'][i]['case'] = 'not-found-in-audio'
+            if 'start' in data['words'][i]:
+                del data['words'][i]['start']
+            if 'end' in data['words'][i]:
+                del data['words'][i]['end']
 
 
 for i in sorted(removeWords, reverse=True):
