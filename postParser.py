@@ -50,21 +50,50 @@ for i, w in enumerate(data['words']):
             for j in range(max(i-niaCap, 0), i):
                 data['words'][j]['alligned'] = 'False'
                 data['words'][j]['case'] = 'not-found-in-audio'
-                if 'start' in data['words'][j]:
-                    del data['words'][j]['start']
-                if 'end' in data['words'][j]:
-                    del data['words'][j]['end']
+                # if 'start' in data['words'][j]:
+                #     del data['words'][j]['start']
+                # if 'end' in data['words'][j]:
+                #     del data['words'][j]['end']
         if niaMode:
             data['words'][i]['alligned'] = 'False'
             data['words'][i]['case'] = 'not-found-in-audio'
-            if 'start' in data['words'][i]:
-                del data['words'][i]['start']
-            if 'end' in data['words'][i]:
-                del data['words'][i]['end']
-
+            # if 'start' in data['words'][i]:
+            #     del data['words'][i]['start']
+            # if 'end' in data['words'][i]:
+            #     del data['words'][i]['end']
 
 for i in sorted(removeWords, reverse=True):
     del data['words'][i]
+
+line = []
+for i, w in enumerate(data['words']):
+    # detect line
+    line.append(i)
+    tc = w['endOffset']+1
+    lineEnd = False
+    while(re.compile(r'[^0-9^a-z^A-Z]').match(data['transcript'][tc]) is not None):
+        if data['transcript'][tc] == '\n':
+            lineEnd = True
+            break
+        tc += 1
+
+    if lineEnd:
+        success = False
+        for j in line:
+            if data['words'][j]['case'] == 'success':
+                success = True
+                break
+        if success:
+            for j in line:
+                data['words'][j]['case'] = 'success'
+        line = []
+
+for i, w in enumerate(data['words']):
+    if w['case'] == 'not-found-in-audio':
+        if 'start' in data['words'][i]:
+            del data['words'][i]['start']
+        if 'end' in data['words'][i]:
+            del data['words'][i]['end']
 
 with open(sys.argv[2], 'w') as f:
     json.dump(data, f)
