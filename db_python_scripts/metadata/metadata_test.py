@@ -1,49 +1,29 @@
 import boto3
+import unittest
 
-dynamodb = boto3.resource("dynamodb",endpoint_url="http://localhost:8000")
+dynamodb = boto3.resource("dynamodb")
+client = boto3.client('dynamodb')
 
 table = dynamodb.Table("metadata")
 
+class TestDatabaseCreation(unittest.TestCase):
 
-table.put_item(
-    Item = {
-        'name' : 'MB_1960_Fassbender',
-        'edit' : 'none',
-        'class': 'none',
-        'type': 'none',
-        'actors': {
-            'Macbeth':'Michael Fassbender',
-            'Lady Macbeth': 'Marion Cotillard'
-        },
-        'accent':'UK',
-        'time': 113,
-        'producer':'none',
-        'director':'Justin Kurzel',
-        'writers':{
-            '1':'Todd Louiso',
-            '2':'Jacob Koskoff',
-            '3':'Micheal Lesslie'
-        },
-        'distributor':{
-            '1':'Studio Canal',
-            '2':'The Weinstein Company'
-        },
-        'company':{
-            '1':'Anton Capital Entertainment',
-            '2':'Creative Scotland',
-            '3':'DMC Film',
-            '4':'Film 4',
-            '5':'See-Saw Films'
-        },
-        'music': 'Jed Kurzel',
-        'location':'none'
-    }
-)
+    def test_table_exists(self):
+        try:
+            table = dynamodb.Table("metadata")
+        except:
+            self.fail("Table was not created successfully")
 
-response = table.get_item(
-    Key = {
-        "name":'MB_1960_Fassbender',
-    }
-)
-item = response['Item']
-print(item)
+    def test_Illuminations(self):
+        response = table.get_item(Key = {'name':'MB-2001-UK-Stage-Illuminations'})
+        try:
+            item = response['Item']
+        except:
+            self.fail("MB-2001-UK-Stage-Illuminations is not present in database")
+
+    def test_number_of_items(self):
+        response = client.describe_table(TableName='metadata')
+        self.assertEqual(response['Table']['ItemCount'],64)
+
+
+unittest.main()
