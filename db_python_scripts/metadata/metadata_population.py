@@ -18,9 +18,14 @@ def spliter(unsplit_data):
 
 file_names = []
 
-for file in os.listdir(os.getcwd()):
+for file in os.listdir("./source"):
     if file.endswith(".tsv"):
         file_names.append(file)
+
+print(file_names)
+
+
+
 
 dynamodb = boto3.resource("dynamodb")
 
@@ -30,7 +35,7 @@ with table.batch_writer() as batch:
 
     for file_name in file_names:
         print("processing "+file_name)
-        with open(file_name) as f:
+        with open("./source/"+file_name) as f:
             csv_reader = csv.reader(f, delimiter='\t')
             line_number = 0
             for line in csv_reader:
