@@ -18,7 +18,7 @@ def spliter(unsplit_data):
 
 file_names = []
 
-for file in os.listdir(os.getcwd()):
+for file in os.listdir("./source"):
     if file.endswith(".tsv"):
         file_names.append(file)
 
@@ -28,7 +28,7 @@ table = dynamodb.Table("annotations")
 
 with table.batch_writer() as batch:
     for file_name in file_names:
-            with open(file_name) as f:
+            with open("./source/"+file_name) as f:
                 csv_reader = csv.reader(f, delimiter='\t')
                 line_number = 0
                 for line in csv_reader:
@@ -76,3 +76,8 @@ with table.batch_writer() as batch:
                             batch.put_item(Item = new_item)
 
                     line_number += 1
+
+
+response = table.scan(Select='COUNT')
+
+print(response)
