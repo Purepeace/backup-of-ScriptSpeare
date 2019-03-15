@@ -1,5 +1,3 @@
 before_script:
-	- mkdir tomcat
-	- cd TSAR
-	- ./SetUpTomcatPostgres.sh ../tomcat/
-	- cd ../tomcat/apache*/
+pip3 install --upgrade awscli
+aws --version
