@@ -1,0 +1,32 @@
+Instructions for populating dynamo db with tsv files generated in the format discussed
+on google sheets.
+
+run setup.command in the /db_python_scripts directory
+
+This command will install pip then install aws cli. It will then prompt you for a
+access key and password, these can be generated from the IAM managment console;
+go to users and add a user to generate a new key:password pair. 
+
+If prompted for a region enter 'eu-west-2' 
+If prompted for a default output fromat enter 'json'
+
+If you need to reconfigure these settings any time run configure.command in the 
+same directory.
+
+To populate the metadata table add all new tsv files to the source folder in 
+db_python_scripts/metadata. Then run the populate.command file.
+
+To populate the annnotations table add all new tsv files to the source folder in 
+db_python_scripts/annotations. Then run the populate.command file.
+
+To delete the metadata table run the deletion.command file in the 
+db_python_scripts/metadata directory.
+
+To delete the annotations table run the deletion.command file in the 
+db_python_scripts/annotations directory.
+
+To re-create the metadata table run the creation.command file in the
+db_python_scripts/metadata directory.
+
+To re-create the metadata table run the creation.command file in the
+db_python_scripts/annotations directory.
