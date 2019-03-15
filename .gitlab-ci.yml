@@ -1,0 +1,5 @@
+before_script:
+	- mkdir tomcat
+	- cd TSAR
+	- ./SetUpTomcatPostgres.sh ../tomcat/
+	- cd ../tomcat/apache*/
